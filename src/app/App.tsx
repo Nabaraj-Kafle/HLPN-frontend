@@ -412,7 +412,7 @@ function AppContent() {
             />
           }
         />
-        <Route path="/vendor" element={<VendorPage />} />
+        {/* <Route path="/vendor" element={<VendorPage />} /> */}
         <Route path="/vendor/:vendorId" element={<VendorStorePage />} />
         <Route path="/becomevendor" element={<BecomeVendorPage />} />
         <Route path="/about" element={<AboutPage />} />

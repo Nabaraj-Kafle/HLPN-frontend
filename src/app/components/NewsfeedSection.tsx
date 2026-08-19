@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { NewsfeedItem } from "@/lib/store-api";
 import { Calendar, X } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 interface NewsfeedSectionProps {
   newsfeeds: NewsfeedItem[];
@@ -29,7 +29,7 @@ export function NewsfeedSection({
       return dateString;
     }
   };
-
+  const navigate = useNavigate();
   return (
     <section className="py-16 bg-[#F9FAFB]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -63,47 +63,43 @@ export function NewsfeedSection({
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {newsfeeds.map((item) => (
-              <article
-                key={item.id}
-                className="bg-white rounded-2xl overflow-hidden shadow-sm border border-[#E2E8F0] hover:shadow-xl transition-all duration-300 group flex flex-col h-full"
-              >
-                {item.image && (
-                  <div className="relative h-56 overflow-hidden bg-[#F1F5F9] flex-shrink-0">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                  </div>
-                )}
+              <Link to={`/newsfeed/${item?.id}`}>
+                <article
+                  key={item.id}
+                  className="bg-white rounded-2xl overflow-hidden shadow-sm border border-[#E2E8F0] hover:shadow-xl transition-all duration-300 group flex flex-col h-full"
+                >
+                  {item.image && (
+                    <div className="relative h-56 overflow-hidden bg-[#F1F5F9] flex-shrink-0">
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                    </div>
+                  )}
 
-                <div className="p-6 flex flex-col flex-grow">
-                  <div className="flex items-center gap-2 text-sm text-[#64748B] mb-3">
-                    <Calendar className="w-4 h-4" />
-                    <time dateTime={item.created_at}>
-                      {formatDate(item.created_at)}
-                    </time>
-                  </div>
-
-                  <h3 className="text-xl font-bold text-[#0F172A] mb-3 line-clamp-2 group-hover:text-[#16A34A] transition-colors">
-                    {item.title}
-                  </h3>
-
-                  <p className="text-[#475569] line-clamp-2 mb-4 flex-grow">
-                    {item.content}
-                  </p>
-
-                  <Link to={`/newsfeed/${item?.id}`}>
-                    {" "}
-                    <button className="text-[#16A34A] font-bold text-sm inline-flex items-center gap-1 hover:text-[#15803D] transition-colors mt-auto w-fit">
+                  <div className="p-6 flex flex-col flex-grow">
+                    <div className="flex items-center gap-2 text-sm text-[#64748B] mb-3">
+                      <Calendar className="w-4 h-4" />
+                      <time dateTime={item.created_at}>
+                        {formatDate(item.created_at)}
+                      </time>
+                    </div>
+                    <h3 className="text-xl font-bold text-[#0F172A] mb-3 line-clamp-2 group-hover:text-[#16A34A] transition-colors">
+                      {item.title}
+                    </h3>
+                    <p className="text-[#475569] line-clamp-2 mb-4 flex-grow">
+                      {item.content}
+                    </p>{" "}
+                    {/* <button className="text-[#16A34A] font-bold text-sm inline-flex items-center gap-1 hover:text-[#15803D] transition-colors mt-auto w-fit">
                       Read More
                       <span className="group-hover:translate-x-1 transition-transform">
                         →
                       </span>
-                    </button>
-                  </Link>
-                </div>
-              </article>
+                    </button> */}
+                  </div>
+                </article>
+              </Link>
             ))}
           </div>
         )}

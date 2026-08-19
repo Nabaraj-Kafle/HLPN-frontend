@@ -30,7 +30,7 @@ interface NavbarProps {
 const NAV_LINKS = [
   { label: "Home", to: "/" },
   { label: "Shop", to: "/shop" },
-  { label: "Vendor", to: "/vendor" },
+  // { label: "Vendor", to: "/vendor" },
   { label: "Categories", to: "/categories" },
   { label: "Our Story", to: "/about" },
 ];
