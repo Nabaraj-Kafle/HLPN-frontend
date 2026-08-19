@@ -140,6 +140,11 @@ function AppContent() {
     quantity: number = 1,
     variant?: ProductVariant | null,
   ) => {
+    if (!user) {
+      toast.error("Please log in to add products to your cart.");
+      return;
+    }
+
     const isAvailable = variant ? variant.inStock : product.inStock;
     if (!isAvailable) return;
 
@@ -171,16 +176,6 @@ function AppContent() {
         },
       ];
     });
-
-    // Only sync with API if user is authenticated
-    if (!user) {
-      toast.success(
-        variantName
-          ? `Added ${product.name} (${variantName}) to cart`
-          : "Added to cart",
-      );
-      return;
-    }
 
     try {
       await storefrontApi.addToCart(product.id, quantity, variantId);
