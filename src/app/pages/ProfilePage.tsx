@@ -114,12 +114,15 @@ interface Address {
 /* ─── Main Component ────────────────────────────────────── */
 
 export function ProfilePage() {
+  const { user: authUser, logout, isLoading: authLoading } = useAuth();
+
   useEffect(() => {
-    window.location.href =
-      "https://api.himalayanlocalproductnepal.com.np/dashboard/";
-  }, []);
+    if (!authLoading && authUser?.role === "admin") {
+      window.location.href =
+        "https://api.himalayanlocalproductnepal.com.np/dashboard/";
+    }
+  }, [authLoading, authUser?.role]);
   const navigate = useNavigate();
-  const { user: authUser, logout } = useAuth();
   const [activeTab, setActiveTab] = useState("dashboard");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orders, setOrders] = useState<Order[]>([]);
