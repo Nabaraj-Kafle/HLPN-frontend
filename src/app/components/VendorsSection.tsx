@@ -10,7 +10,7 @@ interface VendorsSectionProps {
 export function VendorsSection({ vendors, isLoading }: VendorsSectionProps) {
   // Limit to 6 vendors to make exactly two rows of 3 on desktop
   const displayVendors = vendors.slice(0, 6);
-
+  return <></>;
   return (
     <section className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -19,7 +19,8 @@ export function VendorsSection({ vendors, isLoading }: VendorsSectionProps) {
             Our Partner Vendors
           </h2>
           <p className="text-[#6B7280] max-w-2xl mx-auto">
-            Discover authentic local producers, farmers, and artisans selling quality products from Nepal
+            Discover authentic local producers, farmers, and artisans selling
+            quality products from Nepal
           </p>
           <div className="absolute top-0 right-0 hidden md:block">
             <Link
@@ -33,7 +34,9 @@ export function VendorsSection({ vendors, isLoading }: VendorsSectionProps) {
         </div>
 
         {isLoading ? (
-          <div className="text-center py-10 text-[#6B7280]">Loading vendors...</div>
+          <div className="text-center py-10 text-[#6B7280]">
+            Loading vendors...
+          </div>
         ) : displayVendors.length === 0 ? (
           <div className="text-center py-10 text-[#6B7280]">
             No partner vendors found.

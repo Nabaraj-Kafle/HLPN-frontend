@@ -28,10 +28,22 @@ import { storefrontApi, type Order } from "@/lib/store-api";
 /* ─── Mock Data ─────────────────────────────────────────── */
 
 const stats = [
-  { label: "Total Orders", value: "12", icon: Package, color: "text-blue-600", bg: "bg-blue-50" },
+  {
+    label: "Total Orders ",
+    value: "12",
+    icon: Package,
+    color: "text-blue-600",
+    bg: "bg-blue-50",
+  },
   // { label: "Wishlist Items", value: "8", icon: Heart, color: "text-rose-600", bg: "bg-rose-50" },
-  { label: "Cart Items", value: "3", icon: ShoppingBag, color: "text-emerald-600", bg: "bg-emerald-50" },
-  { label: "Notifications", value: "5", icon: Bell, color: "text-amber-600", bg: "bg-amber-50" },
+  {
+    label: "Cart Items",
+    value: "3",
+    icon: ShoppingBag,
+    color: "text-emerald-600",
+    bg: "bg-emerald-50",
+  },
+  // { label: "Notifications", value: "5", icon: Bell, color: "text-amber-600", bg: "bg-amber-50" },
 ];
 
 const initialOrders = [
@@ -41,7 +53,8 @@ const initialOrders = [
     price: 299.99,
     date: "Oct 12, 2025",
     status: "Delivered",
-    image: "https://images.unsplash.com/photo-1578517581165-61ec5ab27a19?auto=format&fit=crop&w=150&q=80",
+    image:
+      "https://images.unsplash.com/photo-1578517581165-61ec5ab27a19?auto=format&fit=crop&w=150&q=80",
   },
   {
     id: "#ORD-6544",
@@ -49,7 +62,8 @@ const initialOrders = [
     price: 449.99,
     date: "Oct 08, 2025",
     status: "Pending",
-    image: "https://images.unsplash.com/photo-1557438159-51eec7a6c9e8?auto=format&fit=crop&w=150&q=80",
+    image:
+      "https://images.unsplash.com/photo-1557438159-51eec7a6c9e8?auto=format&fit=crop&w=150&q=80",
   },
   {
     id: "#ORD-2219",
@@ -57,7 +71,8 @@ const initialOrders = [
     price: 1299.99,
     date: "Sept 24, 2025",
     status: "Cancelled",
-    image: "https://images.unsplash.com/photo-1677157561132-4f9e282a1684?auto=format&fit=crop&w=150&q=80",
+    image:
+      "https://images.unsplash.com/photo-1677157561132-4f9e282a1684?auto=format&fit=crop&w=150&q=80",
   },
 ];
 
@@ -66,19 +81,22 @@ const initialWishlist = [
     id: 1,
     name: "Mechanical Gaming Keyboard",
     price: 149.99,
-    image: "https://images.unsplash.com/photo-1656711081969-9d16ebc2d210?auto=format&fit=crop&w=300&q=80",
+    image:
+      "https://images.unsplash.com/photo-1656711081969-9d16ebc2d210?auto=format&fit=crop&w=300&q=80",
   },
   {
     id: 2,
     name: "Portable Bluetooth Speaker",
     price: 79.99,
-    image: "https://images.unsplash.com/photo-1674303324806-7018a739ed11?auto=format&fit=crop&w=300&q=80",
+    image:
+      "https://images.unsplash.com/photo-1674303324806-7018a739ed11?auto=format&fit=crop&w=300&q=80",
   },
   {
     id: 3,
     name: "Classic Leather Sneaker",
     price: 119.99,
-    image: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=300&q=80",
+    image:
+      "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=300&q=80",
   },
 ];
 
@@ -96,6 +114,10 @@ interface Address {
 /* ─── Main Component ────────────────────────────────────── */
 
 export function ProfilePage() {
+  useEffect(() => {
+    window.location.href =
+      "https://api.himalayanlocalproductnepal.com.np/dashboard/";
+  }, []);
   const navigate = useNavigate();
   const { user: authUser, logout } = useAuth();
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -108,7 +130,8 @@ export function ProfilePage() {
     if (!authUser) return null;
 
     return {
-      name: `${authUser.first_name} ${authUser.last_name}`.trim() || authUser.email,
+      name:
+        `${authUser.first_name} ${authUser.last_name}`.trim() || authUser.email,
       email: authUser.email,
       phone: authUser.phone,
       avatar: getUserAvatar(authUser),
@@ -164,7 +187,8 @@ export function ProfilePage() {
         const fetchedOrders = await storefrontApi.getOrders();
         setOrders(fetchedOrders);
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : "Failed to load orders";
+        const errorMessage =
+          error instanceof Error ? error.message : "Failed to load orders";
         console.error("Error fetching orders:", error);
         setOrdersError(errorMessage);
         // Keep using empty array on error
@@ -234,7 +258,9 @@ export function ProfilePage() {
     const res = await apiService.saveAddress(addressData);
     if (res.success) {
       if (editingAddress) {
-        setAddresses(addresses.map(a => a.id === editingAddress.id ? res.data : a));
+        setAddresses(
+          addresses.map((a) => (a.id === editingAddress.id ? res.data : a)),
+        );
       } else {
         setAddresses([...addresses, res.data]);
       }
@@ -247,7 +273,7 @@ export function ProfilePage() {
   const handleDeleteAddress = async (id: number) => {
     if (confirm("Are you sure you want to delete this address?")) {
       await apiService.deleteAddress(id);
-      setAddresses(addresses.filter(a => a.id !== id));
+      setAddresses(addresses.filter((a) => a.id !== id));
     }
   };
 
@@ -265,7 +291,6 @@ export function ProfilePage() {
   return (
     <div className="min-h-screen bg-[#F8FAFC] py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8">
-
         {/* Sidebar Navigation */}
         <aside className="lg:w-72 shrink-0">
           <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm sticky top-24">
@@ -278,12 +303,19 @@ export function ProfilePage() {
                     "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 font-medium text-sm text-left",
                     activeTab === link.id
                       ? "bg-slate-900 text-white shadow-lg shadow-slate-200"
-                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900",
                   )}
                 >
-                  <link.icon className={cn("w-5 h-5", activeTab === link.id ? "text-white" : "text-slate-400")} />
+                  <link.icon
+                    className={cn(
+                      "w-5 h-5",
+                      activeTab === link.id ? "text-white" : "text-slate-400",
+                    )}
+                  />
                   {link.label}
-                  {activeTab === link.id && <ChevronRight className="w-4 h-4 ml-auto" />}
+                  {activeTab === link.id && (
+                    <ChevronRight className="w-4 h-4 ml-auto" />
+                  )}
                 </button>
               ))}
               <div className="h-px bg-slate-100 my-4" />
@@ -300,7 +332,6 @@ export function ProfilePage() {
 
         {/* Main Content Area */}
         <main className="flex-1 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-
           {/* User Profile Header */}
           <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm flex flex-col md:flex-row items-center gap-6 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-emerald-500 to-amber-500" />
@@ -333,11 +364,17 @@ export function ProfilePage() {
               </button>
             </div>
             <div className="text-center md:text-left">
-              <h1 className="text-2xl font-bold text-slate-900">{profile.name}</h1>
+              <h1 className="text-2xl font-bold text-slate-900">
+                {profile.name}
+              </h1>
               <p className="text-slate-500 text-sm mt-1">{profile.email}</p>
               <div className="flex flex-wrap justify-center md:justify-start gap-2 mt-4">
-                <span className="bg-slate-900 text-white text-[10px] uppercase tracking-widest font-bold px-3 py-1 rounded-full">Pro Member</span>
-                <span className="bg-emerald-100 text-emerald-700 text-[10px] uppercase tracking-widest font-bold px-3 py-1 rounded-full">Verified</span>
+                <span className="bg-slate-900 text-white text-[10px] uppercase tracking-widest font-bold px-3 py-1 rounded-full">
+                  Pro Member
+                </span>
+                <span className="bg-emerald-100 text-emerald-700 text-[10px] uppercase tracking-widest font-bold px-3 py-1 rounded-full">
+                  Verified
+                </span>
               </div>
             </div>
             <button
@@ -355,14 +392,27 @@ export function ProfilePage() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {stats.map((stat) => {
                   // Override the value for Total Orders stat with actual count
-                  const displayValue = stat.label === "Total Orders" ? orders.length : stat.value;
+                  const displayValue =
+                    stat.label === "Total Orders" ? orders.length : stat.value;
                   return (
-                    <div key={stat.label} className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow group">
-                      <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform", stat.bg)}>
+                    <div
+                      key={stat.label}
+                      className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow group"
+                    >
+                      <div
+                        className={cn(
+                          "w-10 h-10 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform",
+                          stat.bg,
+                        )}
+                      >
                         <stat.icon className={cn("w-5 h-5", stat.color)} />
                       </div>
-                      <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider">{stat.label}</p>
-                      <h3 className="text-2xl font-bold text-slate-900 mt-1">{displayValue}</h3>
+                      <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider">
+                        {stat.label}
+                      </p>
+                      <h3 className="text-2xl font-bold text-slate-900 mt-1">
+                        {displayValue}
+                      </h3>
                     </div>
                   );
                 })}
@@ -376,25 +426,47 @@ export function ProfilePage() {
                       <Package className="w-5 h-5 text-blue-500" />
                       Recent Orders
                     </h2>
-                    <button onClick={() => setActiveTab("orders")} className="text-xs font-bold text-blue-600 hover:text-blue-700">View All</button>
+                    <button
+                      onClick={() => setActiveTab("orders")}
+                      className="text-xs font-bold text-blue-600 hover:text-blue-700"
+                    >
+                      View All
+                    </button>
                   </div>
                   <div className="p-0 flex-1">
                     {orders.slice(0, 2).length > 0 ? (
                       orders.slice(0, 2).map((order) => (
-                        <div key={order.id} className="p-4 border-b border-slate-50 hover:bg-slate-50 transition-colors flex items-center gap-4">
+                        <div
+                          key={order.id}
+                          className="p-4 border-b border-slate-50 hover:bg-slate-50 transition-colors flex items-center gap-4"
+                        >
                           {order.items[0]?.productImage && (
-                            <img src={order.items[0].productImage} className="w-12 h-12 rounded-lg object-cover" />
+                            <img
+                              src={order.items[0].productImage}
+                              className="w-12 h-12 rounded-lg object-cover"
+                            />
                           )}
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-bold text-slate-900 truncate">{order.items[0]?.productName || "Order"}</p>
-                            <p className="text-xs text-slate-500 mt-0.5">{order.orderNumber} • {new Date(order.createdAt).toLocaleDateString()}</p>
+                            <p className="text-sm font-bold text-slate-900 truncate">
+                              {order.items[0]?.productName || "Order"}
+                            </p>
+                            <p className="text-xs text-slate-500 mt-0.5">
+                              {order.orderNumber} •{" "}
+                              {new Date(order.createdAt).toLocaleDateString()}
+                            </p>
                           </div>
                           <div className="text-right">
-                            <p className="text-sm font-bold text-slate-900">Rs. {order.total.toFixed(2)}</p>
-                            <span className={cn(
-                              "text-[10px] font-bold px-2 py-0.5 rounded-full uppercase",
-                              order.status === "delivered" ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"
-                            )}>
+                            <p className="text-sm font-bold text-slate-900">
+                              Rs. {order.total.toFixed(2)}
+                            </p>
+                            <span
+                              className={cn(
+                                "text-[10px] font-bold px-2 py-0.5 rounded-full uppercase",
+                                order.status === "delivered"
+                                  ? "bg-emerald-100 text-emerald-700"
+                                  : "bg-amber-100 text-amber-700",
+                              )}
+                            >
                               {order.status}
                             </span>
                           </div>
@@ -437,7 +509,9 @@ export function ProfilePage() {
           {activeTab === "orders" && (
             <div className="space-y-6 animate-in fade-in duration-500">
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-slate-900">Your Orders</h2>
+                <h2 className="text-xl font-bold text-slate-900">
+                  Your Orders
+                </h2>
               </div>
               {ordersLoading ? (
                 <div className="flex items-center justify-center py-12">
@@ -450,9 +524,17 @@ export function ProfilePage() {
                     onClick={() => {
                       setOrdersError(null);
                       setOrdersLoading(true);
-                      storefrontApi.getOrders().then(setOrders).catch(e => {
-                        setOrdersError(e instanceof Error ? e.message : "Failed to load orders");
-                      }).finally(() => setOrdersLoading(false));
+                      storefrontApi
+                        .getOrders()
+                        .then(setOrders)
+                        .catch((e) => {
+                          setOrdersError(
+                            e instanceof Error
+                              ? e.message
+                              : "Failed to load orders",
+                          );
+                        })
+                        .finally(() => setOrdersLoading(false));
                     }}
                     className="mt-3 text-red-600 hover:text-red-700 font-semibold text-sm"
                   >
@@ -462,10 +544,17 @@ export function ProfilePage() {
               ) : orders.length > 0 ? (
                 <div className="space-y-4">
                   {orders.map((order) => (
-                    <div key={order.id} className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm flex flex-col md:flex-row items-center gap-6 hover:shadow-md transition-shadow">
+                    <div
+                      key={order.id}
+                      className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm flex flex-col md:flex-row items-center gap-6 hover:shadow-md transition-shadow"
+                    >
                       {order.items[0]?.productImage && (
                         <div className="w-20 h-20 rounded-xl overflow-hidden bg-slate-100 shrink-0 shadow-inner">
-                          <img src={order.items[0].productImage} alt={order.items[0].productName} className="w-full h-full object-cover" />
+                          <img
+                            src={order.items[0].productImage}
+                            alt={order.items[0].productName}
+                            className="w-full h-full object-cover"
+                          />
                         </div>
                       )}
                       <div className="flex-1 text-center md:text-left min-w-0">
@@ -473,23 +562,37 @@ export function ProfilePage() {
                           <h3 className="font-bold text-slate-900 text-lg truncate">
                             {order.items.length === 1
                               ? order.items[0]?.productName
-                              : `${order.items.length} items`
-                            }
+                              : `${order.items.length} items`}
                           </h3>
-                          <span className={cn(
-                            "text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase w-fit mx-auto md:mx-0",
-                            order.status === "delivered" ? "bg-emerald-100 text-emerald-700" :
-                              order.status === "pending" ? "bg-amber-100 text-amber-700" :
-                                order.status === "shipped" ? "bg-blue-100 text-blue-700" :
-                                  order.status === "processing" ? "bg-purple-100 text-purple-700" : "bg-rose-100 text-rose-700"
-                          )}>
+                          <span
+                            className={cn(
+                              "text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase w-fit mx-auto md:mx-0",
+                              order.status === "delivered"
+                                ? "bg-emerald-100 text-emerald-700"
+                                : order.status === "pending"
+                                  ? "bg-amber-100 text-amber-700"
+                                  : order.status === "shipped"
+                                    ? "bg-blue-100 text-blue-700"
+                                    : order.status === "processing"
+                                      ? "bg-purple-100 text-purple-700"
+                                      : "bg-rose-100 text-rose-700",
+                            )}
+                          >
                             {order.status}
                           </span>
                         </div>
-                        <p className="text-sm text-slate-500">Order ID: <span className="text-slate-900 font-medium">{order.orderNumber}</span> • {new Date(order.createdAt).toLocaleDateString()}</p>
+                        <p className="text-sm text-slate-500">
+                          Order ID:{" "}
+                          <span className="text-slate-900 font-medium">
+                            {order.orderNumber}
+                          </span>{" "}
+                          • {new Date(order.createdAt).toLocaleDateString()}
+                        </p>
                       </div>
                       <div className="text-center md:text-right shrink-0">
-                        <p className="text-xl font-bold text-slate-900 mb-2">Rs. {order.total.toFixed(2)}</p>
+                        <p className="text-xl font-bold text-slate-900 mb-2">
+                          Rs. {order.total.toFixed(2)}
+                        </p>
                         <button className="text-sm font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1 mx-auto md:ml-auto">
                           Track Package <ChevronRight className="w-4 h-4" />
                         </button>
@@ -501,7 +604,9 @@ export function ProfilePage() {
                 <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center">
                   <Package className="w-12 h-12 text-slate-300 mx-auto mb-4" />
                   <p className="text-slate-500 font-semibold">No orders yet</p>
-                  <p className="text-slate-400 text-sm mt-1">Start shopping to create your first order!</p>
+                  <p className="text-slate-400 text-sm mt-1">
+                    Start shopping to create your first order!
+                  </p>
                 </div>
               )}
             </div>
@@ -509,19 +614,32 @@ export function ProfilePage() {
 
           {activeTab === "wishlist" && (
             <div className="space-y-6 animate-in fade-in duration-500">
-              <h2 className="text-xl font-bold text-slate-900">Wishlist ({initialWishlist.length})</h2>
+              <h2 className="text-xl font-bold text-slate-900">
+                Wishlist ({initialWishlist.length})
+              </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {initialWishlist.map((item) => (
-                  <div key={item.id} className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all group">
+                  <div
+                    key={item.id}
+                    className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all group"
+                  >
                     <div className="relative aspect-square overflow-hidden bg-slate-50">
-                      <img src={item.image} alt={item.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
                       <button className="absolute top-4 right-4 p-2 bg-white/80 backdrop-blur-md rounded-full text-slate-400 hover:text-rose-500 transition-colors shadow-lg shadow-black/5">
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
                     <div className="p-5">
-                      <h3 className="font-bold text-slate-900 truncate">{item.name}</h3>
-                      <p className="text-emerald-600 font-bold text-lg mt-1">Rs. {item.price}</p>
+                      <h3 className="font-bold text-slate-900 truncate">
+                        {item.name}
+                      </h3>
+                      <p className="text-emerald-600 font-bold text-lg mt-1">
+                        Rs. {item.price}
+                      </p>
                       <button className="w-full mt-4 bg-slate-900 text-white font-bold py-2.5 rounded-xl hover:bg-slate-800 transition-colors text-sm flex items-center justify-center gap-2">
                         <ShoppingBag className="w-4 h-4" />
                         Add to Cart
@@ -543,7 +661,10 @@ export function ProfilePage() {
                     Address Book
                   </h2>
                   <button
-                    onClick={() => { setEditingAddress(null); setIsAddressModalOpen(true); }}
+                    onClick={() => {
+                      setEditingAddress(null);
+                      setIsAddressModalOpen(true);
+                    }}
                     className="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1"
                   >
                     <Plus className="w-4 h-4" /> Add New Address
@@ -551,31 +672,55 @@ export function ProfilePage() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {addresses.map((addr) => (
-                    <div key={addr.id} className={cn(
-                      "bg-white rounded-2xl border p-5 shadow-sm flex flex-col gap-3 relative transition-all",
-                      addr.isDefault ? "border-slate-900" : "border-slate-200 hover:border-slate-300"
-                    )}>
+                    <div
+                      key={addr.id}
+                      className={cn(
+                        "bg-white rounded-2xl border p-5 shadow-sm flex flex-col gap-3 relative transition-all",
+                        addr.isDefault
+                          ? "border-slate-900"
+                          : "border-slate-200 hover:border-slate-300",
+                      )}
+                    >
                       {addr.isDefault && (
-                        <span className="absolute top-4 right-4 bg-slate-900 text-white text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Default</span>
+                        <span className="absolute top-4 right-4 bg-slate-900 text-white text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
+                          Default
+                        </span>
                       )}
                       <div className="flex items-center gap-2">
-                        <span className={cn(
-                          "text-[10px] font-extrabold px-2 py-0.5 rounded-md uppercase tracking-wide",
-                          addr.type === "Home" ? "bg-blue-50 text-blue-600" : "bg-purple-50 text-purple-600"
-                        )}>{addr.type}</span>
-                        <h3 className="font-bold text-slate-900">{addr.name}</h3>
+                        <span
+                          className={cn(
+                            "text-[10px] font-extrabold px-2 py-0.5 rounded-md uppercase tracking-wide",
+                            addr.type === "Home"
+                              ? "bg-blue-50 text-blue-600"
+                              : "bg-purple-50 text-purple-600",
+                          )}
+                        >
+                          {addr.type}
+                        </span>
+                        <h3 className="font-bold text-slate-900">
+                          {addr.name}
+                        </h3>
                       </div>
-                      <p className="text-sm text-slate-500 leading-relaxed">{addr.address}</p>
-                      <p className="text-sm font-semibold text-slate-900">{addr.phone}</p>
+                      <p className="text-sm text-slate-500 leading-relaxed">
+                        {addr.address}
+                      </p>
+                      <p className="text-sm font-semibold text-slate-900">
+                        {addr.phone}
+                      </p>
                       <div className="flex gap-4 mt-2">
                         <button
-                          onClick={() => { setEditingAddress(addr); setIsAddressModalOpen(true); }}
+                          onClick={() => {
+                            setEditingAddress(addr);
+                            setIsAddressModalOpen(true);
+                          }}
                           className="text-xs font-bold text-slate-400 hover:text-slate-900 transition-colors"
                         >
                           Edit Address
                         </button>
                         <button
-                          onClick={() => addr.id && handleDeleteAddress(addr.id)}
+                          onClick={() =>
+                            addr.id && handleDeleteAddress(addr.id)
+                          }
                           className="text-xs font-bold text-slate-400 hover:text-rose-500 transition-colors"
                         >
                           Remove
@@ -589,7 +734,8 @@ export function ProfilePage() {
               <section className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                 <div className="p-6 border-b border-slate-100">
                   <h2 className="font-bold text-slate-900 flex items-center gap-2">
-                    <CreditCard className="w-5 h-5 text-amber-500" /> Payment Methods
+                    <CreditCard className="w-5 h-5 text-amber-500" /> Payment
+                    Methods
                   </h2>
                 </div>
                 <div className="p-6">
@@ -600,7 +746,6 @@ export function ProfilePage() {
               </section>
             </div>
           )}
-
         </main>
       </div>
 
@@ -609,28 +754,63 @@ export function ProfilePage() {
       {/* Edit Profile Modal */}
       {isEditProfileOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300" onClick={() => setIsEditProfileOpen(false)} />
+          <div
+            className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300"
+            onClick={() => setIsEditProfileOpen(false)}
+          />
           <div className="relative bg-white rounded-3xl w-full max-w-lg shadow-2xl animate-in zoom-in-95 duration-300 overflow-hidden">
             <div className="p-8">
               <div className="flex items-center justify-between mb-8">
-                <h2 className="text-2xl font-bold text-slate-900">Edit Profile</h2>
-                <button onClick={() => setIsEditProfileOpen(false)} className="p-2 hover:bg-slate-100 rounded-full transition-colors">
+                <h2 className="text-2xl font-bold text-slate-900">
+                  Edit Profile
+                </h2>
+                <button
+                  onClick={() => setIsEditProfileOpen(false)}
+                  className="p-2 hover:bg-slate-100 rounded-full transition-colors"
+                >
                   <X className="w-5 h-5 text-slate-400" />
                 </button>
               </div>
               <form onSubmit={onUpdateProfile} className="space-y-6">
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Full Name</label>
-                  <input name="name" defaultValue={profile.name} required className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900/10 focus:border-slate-900 outline-none transition-all" />
+                  <label className="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">
+                    Full Name
+                  </label>
+                  <input
+                    name="name"
+                    defaultValue={profile.name}
+                    required
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900/10 focus:border-slate-900 outline-none transition-all"
+                  />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Email Address</label>
-                  <input name="email" type="email" defaultValue={profile.email} required className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900/10 focus:border-slate-900 outline-none transition-all" />
+                  <label className="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">
+                    Email Address
+                  </label>
+                  <input
+                    name="email"
+                    type="email"
+                    defaultValue={profile.email}
+                    required
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900/10 focus:border-slate-900 outline-none transition-all"
+                  />
                 </div>
                 <div className="flex gap-4 pt-4">
-                  <button type="button" onClick={() => setIsEditProfileOpen(false)} className="flex-1 px-6 py-3 border border-slate-200 text-slate-600 font-bold rounded-xl hover:bg-slate-50 transition-colors">Cancel</button>
-                  <button type="submit" disabled={isSubmitting} className="flex-1 px-6 py-3 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition-colors flex items-center justify-center gap-2">
-                    {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
+                  <button
+                    type="button"
+                    onClick={() => setIsEditProfileOpen(false)}
+                    className="flex-1 px-6 py-3 border border-slate-200 text-slate-600 font-bold rounded-xl hover:bg-slate-50 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="flex-1 px-6 py-3 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition-colors flex items-center justify-center gap-2"
+                  >
+                    {isSubmitting && (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    )}
                     Save Changes
                   </button>
                 </div>
@@ -643,46 +823,102 @@ export function ProfilePage() {
       {/* Address Modal (Add/Edit) */}
       {isAddressModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300" onClick={() => setIsAddressModalOpen(false)} />
+          <div
+            className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300"
+            onClick={() => setIsAddressModalOpen(false)}
+          />
           <div className="relative bg-white rounded-3xl w-full max-w-lg shadow-2xl animate-in zoom-in-95 duration-300 overflow-hidden">
             <div className="p-8 max-h-[90vh] overflow-y-auto">
               <div className="flex items-center justify-between mb-8">
-                <h2 className="text-2xl font-bold text-slate-900">{editingAddress ? "Edit Address" : "Add Address"}</h2>
-                <button onClick={() => setIsAddressModalOpen(false)} className="p-2 hover:bg-slate-100 rounded-full transition-colors">
+                <h2 className="text-2xl font-bold text-slate-900">
+                  {editingAddress ? "Edit Address" : "Add Address"}
+                </h2>
+                <button
+                  onClick={() => setIsAddressModalOpen(false)}
+                  className="p-2 hover:bg-slate-100 rounded-full transition-colors"
+                >
                   <X className="w-5 h-5 text-slate-400" />
                 </button>
               </div>
               <form onSubmit={onSaveAddress} className="space-y-5">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Address Label</label>
-                    <select name="type" defaultValue={editingAddress?.type || "Home"} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none">
+                    <label className="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">
+                      Address Label
+                    </label>
+                    <select
+                      name="type"
+                      defaultValue={editingAddress?.type || "Home"}
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none"
+                    >
                       <option>Home</option>
                       <option>Office</option>
                       <option>Other</option>
                     </select>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Full Name</label>
-                    <input name="name" defaultValue={editingAddress?.name} required className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none" />
+                    <label className="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">
+                      Full Name
+                    </label>
+                    <input
+                      name="name"
+                      defaultValue={editingAddress?.name}
+                      required
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none"
+                    />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Phone Number</label>
-                  <input name="phone" type="tel" defaultValue={editingAddress?.phone} required className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none" />
+                  <label className="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">
+                    Phone Number
+                  </label>
+                  <input
+                    name="phone"
+                    type="tel"
+                    defaultValue={editingAddress?.phone}
+                    required
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none"
+                  />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">Street Address</label>
-                  <textarea name="address" defaultValue={editingAddress?.address} required rows={3} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none resize-none" />
+                  <label className="text-xs font-bold text-slate-400 uppercase tracking-widest px-1">
+                    Street Address
+                  </label>
+                  <textarea
+                    name="address"
+                    defaultValue={editingAddress?.address}
+                    required
+                    rows={3}
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none resize-none"
+                  />
                 </div>
                 <label className="flex items-center gap-3 cursor-pointer group">
-                  <input type="checkbox" name="isDefault" defaultChecked={editingAddress?.isDefault} className="w-5 h-5 rounded border-slate-300 text-slate-900 focus:ring-slate-900" />
-                  <span className="text-sm font-semibold text-slate-600 group-hover:text-slate-900 transition-colors">Set as default address</span>
+                  <input
+                    type="checkbox"
+                    name="isDefault"
+                    defaultChecked={editingAddress?.isDefault}
+                    className="w-5 h-5 rounded border-slate-300 text-slate-900 focus:ring-slate-900"
+                  />
+                  <span className="text-sm font-semibold text-slate-600 group-hover:text-slate-900 transition-colors">
+                    Set as default address
+                  </span>
                 </label>
                 <div className="flex gap-4 pt-4">
-                  <button type="button" onClick={() => setIsAddressModalOpen(false)} className="flex-1 px-6 py-3 border border-slate-200 text-slate-600 font-bold rounded-xl hover:bg-slate-50 transition-colors">Cancel</button>
-                  <button type="submit" disabled={isSubmitting} className="flex-1 px-6 py-3 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition-colors flex items-center justify-center gap-2">
-                    {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
+                  <button
+                    type="button"
+                    onClick={() => setIsAddressModalOpen(false)}
+                    className="flex-1 px-6 py-3 border border-slate-200 text-slate-600 font-bold rounded-xl hover:bg-slate-50 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="flex-1 px-6 py-3 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition-colors flex items-center justify-center gap-2"
+                  >
+                    {isSubmitting && (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    )}
                     {editingAddress ? "Update" : "Add Address"}
                   </button>
                 </div>
@@ -691,7 +927,6 @@ export function ProfilePage() {
           </div>
         </div>
       )}
-
     </div>
   );
 }

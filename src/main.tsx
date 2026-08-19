@@ -7,7 +7,6 @@ import App from "./app/App";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <App />
-    <Toaster position="top-right" richColors />
+    <Toaster position="top-right" className="!top-20" richColors closeButton />
   </StrictMode>,
 );
-

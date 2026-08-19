@@ -1,4 +1,10 @@
-import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router";
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router";
 import { useEffect, useState, type ReactElement } from "react";
 import { toast } from "sonner";
 import { HomePage } from "@/app/pages/HomePage";
@@ -13,6 +19,7 @@ import { CartPage } from "@/app/pages/CartPage";
 import { VendorPage } from "@/app/pages/VendorPage";
 import { VendorStorePage } from "@/app/pages/VendorStorePage";
 import { AboutPage } from "@/app/pages/AboutPage";
+import NewsfeedPage from "./pages/NewsFeed";
 import { BecomeVendorPage } from "@/app/pages/BecomeVendorPage";
 import { ProfilePage } from "@/app/pages/ProfilePage";
 import { ProductDetailsPage } from "@/app/pages/ProductDetailsPage";
@@ -25,9 +32,18 @@ import { TermsPage } from "@/app/pages/TermsPage";
 import { CheckoutPage } from "@/app/pages/CheckoutPage";
 import { OrdersPage } from "@/app/pages/OrdersPage";
 import { OrderDetailPage } from "@/app/pages/OrderDetailPage";
-import { AuthProvider, getUserAvatar, useAuth } from "@/app/context/authcontext";
+import {
+  AuthProvider,
+  getUserAvatar,
+  useAuth,
+} from "@/app/context/authcontext";
 import type { Product } from "@/app/components/shop/ProductCard";
-import { storefrontApi, type CategoryItem, type VendorItem, type NewsfeedItem } from "@/lib/store-api";
+import {
+  storefrontApi,
+  type CategoryItem,
+  type VendorItem,
+  type NewsfeedItem,
+} from "@/lib/store-api";
 
 type CartItem = Product & { quantity: number; cartItemId?: number };
 
@@ -90,12 +106,13 @@ function AppContent() {
       setVendorsLoading(true);
       setNewsfeedsLoading(true);
       try {
-        const [apiProducts, apiCategories, apiVendors, apiNewsfeeds] = await Promise.all([
-          storefrontApi.getProducts(),
-          storefrontApi.getCategories(),
-          storefrontApi.getVendors(),
-          storefrontApi.getNewsfeeds(),
-        ]);
+        const [apiProducts, apiCategories, apiVendors, apiNewsfeeds] =
+          await Promise.all([
+            storefrontApi.getProducts(),
+            storefrontApi.getCategories(),
+            storefrontApi.getVendors(),
+            storefrontApi.getNewsfeeds(),
+          ]);
         setProducts(apiProducts);
         setCategories(apiCategories);
         setVendors(apiVendors);
@@ -118,7 +135,11 @@ function AppContent() {
   }, [user]);
 
   /* ── Cart Handlers ─────────────────────────── */
-  const handleAddToCart = async (product: Product, quantity: number = 1, variant?: ProductVariant | null) => {
+  const handleAddToCart = async (
+    product: Product,
+    quantity: number = 1,
+    variant?: ProductVariant | null,
+  ) => {
     const isAvailable = variant ? variant.inStock : product.inStock;
     if (!isAvailable) return;
 
@@ -128,10 +149,14 @@ function AppContent() {
 
     // Always update local cart first (works for both guests and authenticated users)
     setCartItems((current) => {
-      const existing = current.find((i) => i.id === product.id && i.variantId === variantId);
+      const existing = current.find(
+        (i) => i.id === product.id && i.variantId === variantId,
+      );
       if (existing) {
         return current.map((i) =>
-          i.id === product.id && i.variantId === variantId ? { ...i, quantity: i.quantity + quantity } : i
+          i.id === product.id && i.variantId === variantId
+            ? { ...i, quantity: i.quantity + quantity }
+            : i,
         );
       }
       return [
@@ -149,14 +174,22 @@ function AppContent() {
 
     // Only sync with API if user is authenticated
     if (!user) {
-      toast.success(variantName ? `Added ${product.name} (${variantName}) to cart` : "Added to cart");
+      toast.success(
+        variantName
+          ? `Added ${product.name} (${variantName}) to cart`
+          : "Added to cart",
+      );
       return;
     }
 
     try {
       await storefrontApi.addToCart(product.id, quantity, variantId);
       await syncCartFromApi();
-      toast.success(variantName ? `Added ${product.name} (${variantName}) to cart` : "Added to cart");
+      toast.success(
+        variantName
+          ? `Added ${product.name} (${variantName}) to cart`
+          : "Added to cart",
+      );
     } catch (error) {
       let errorMessage = "Failed to add item to cart. Please try again.";
 
@@ -174,13 +207,19 @@ function AppContent() {
       toast.error(errorMessage);
       // Revert the optimistic update if the API call fails
       setCartItems((current) => {
-        const existing = current.find((i) => i.id === product.id && i.variantId === variantId);
+        const existing = current.find(
+          (i) => i.id === product.id && i.variantId === variantId,
+        );
         if (existing && existing.quantity <= quantity) {
-          return current.filter((i) => !(i.id === product.id && i.variantId === variantId));
+          return current.filter(
+            (i) => !(i.id === product.id && i.variantId === variantId),
+          );
         }
         if (existing) {
           return current.map((i) =>
-            i.id === product.id && i.variantId === variantId ? { ...i, quantity: i.quantity - quantity } : i
+            i.id === product.id && i.variantId === variantId
+              ? { ...i, quantity: i.quantity - quantity }
+              : i,
           );
         }
         return current;
@@ -188,22 +227,33 @@ function AppContent() {
     }
   };
 
-  const handleUpdateCartQuantity = async (productId: number, quantity: number, variantId?: number) => {
+  const handleUpdateCartQuantity = async (
+    productId: number,
+    quantity: number,
+    variantId?: number,
+  ) => {
     const targetItem = cartItems.find(
-      (item) => item.id === productId && (variantId === undefined || item.variantId === variantId)
+      (item) =>
+        item.id === productId &&
+        (variantId === undefined || item.variantId === variantId),
     ) as (CartItem & { cartItemId?: number }) | undefined;
 
     if (!targetItem?.cartItemId) {
       setCartItems((current) => {
         if (quantity <= 0) {
           return current.filter(
-            (i) => !(i.id === productId && (variantId === undefined || i.variantId === variantId))
+            (i) =>
+              !(
+                i.id === productId &&
+                (variantId === undefined || i.variantId === variantId)
+              ),
           );
         }
         return current.map((i) =>
-          i.id === productId && (variantId === undefined || i.variantId === variantId)
+          i.id === productId &&
+          (variantId === undefined || i.variantId === variantId)
             ? { ...i, quantity }
-            : i
+            : i,
         );
       });
       return;
@@ -213,13 +263,18 @@ function AppContent() {
     setCartItems((current) => {
       if (quantity <= 0) {
         return current.filter(
-          (i) => !(i.id === productId && (variantId === undefined || i.variantId === variantId))
+          (i) =>
+            !(
+              i.id === productId &&
+              (variantId === undefined || i.variantId === variantId)
+            ),
         );
       }
       return current.map((i) =>
-        i.id === productId && (variantId === undefined || i.variantId === variantId)
+        i.id === productId &&
+        (variantId === undefined || i.variantId === variantId)
           ? { ...i, quantity }
-          : i
+          : i,
       );
     });
 
@@ -236,21 +291,38 @@ function AppContent() {
     }
   };
 
-  const handleRemoveFromCart = async (productId: number, variantId?: number) => {
+  const handleRemoveFromCart = async (
+    productId: number,
+    variantId?: number,
+  ) => {
     const targetItem = cartItems.find(
-      (item) => item.id === productId && (variantId === undefined || item.variantId === variantId)
+      (item) =>
+        item.id === productId &&
+        (variantId === undefined || item.variantId === variantId),
     ) as (CartItem & { cartItemId?: number }) | undefined;
 
     if (!targetItem?.cartItemId) {
       setCartItems((current) =>
-        current.filter((i) => !(i.id === productId && (variantId === undefined || i.variantId === variantId)))
+        current.filter(
+          (i) =>
+            !(
+              i.id === productId &&
+              (variantId === undefined || i.variantId === variantId)
+            ),
+        ),
       );
       return;
     }
 
     const previous = cartItems;
     setCartItems((current) =>
-      current.filter((i) => !(i.id === productId && (variantId === undefined || i.variantId === variantId)))
+      current.filter(
+        (i) =>
+          !(
+            i.id === productId &&
+            (variantId === undefined || i.variantId === variantId)
+          ),
+      ),
     );
 
     try {
@@ -276,16 +348,20 @@ function AppContent() {
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const authUser: NavbarUser | null = user
     ? {
-      name: `${user.first_name} ${user.last_name}`.trim() || user.email,
-      email: user.email,
-      avatar: getUserAvatar(user),
-    }
+        name: `${user.first_name} ${user.last_name}`.trim() || user.email,
+        email: user.email,
+        avatar: getUserAvatar(user),
+      }
     : null;
 
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <Navbar cartCount={cartCount} user={authUser} onLogout={() => void logout()} />
+      <Navbar
+        cartCount={cartCount}
+        user={authUser}
+        onLogout={() => void logout()}
+      />
 
       <Routes>
         <Route
@@ -327,7 +403,15 @@ function AppContent() {
           }
         />
         <Route path="/categories" element={<CategoriesPage />} />
-        <Route path="/category/:categoryName" element={<CategoryProductsPage cartItems={cartItems} onAddToCart={handleAddToCart} />} />
+        <Route
+          path="/category/:categoryName"
+          element={
+            <CategoryProductsPage
+              cartItems={cartItems}
+              onAddToCart={handleAddToCart}
+            />
+          }
+        />
         <Route path="/vendor" element={<VendorPage />} />
         <Route path="/vendor/:vendorId" element={<VendorStorePage />} />
         <Route path="/becomevendor" element={<BecomeVendorPage />} />
@@ -347,7 +431,10 @@ function AppContent() {
           path="/checkout"
           element={
             <ProtectedRoute>
-              <CheckoutPage cartItems={cartItems} onClearCart={handleClearCart} />
+              <CheckoutPage
+                cartItems={cartItems}
+                onClearCart={handleClearCart}
+              />
             </ProtectedRoute>
           }
         />
@@ -359,6 +446,7 @@ function AppContent() {
             </ProtectedRoute>
           }
         />
+        <Route path="/newsfeed/:id" element={<NewsfeedPage />} />
         <Route
           path="/orders/:id"
           element={
@@ -368,7 +456,10 @@ function AppContent() {
           }
         />
 
-        <Route path="/product/:id" element={<ProductDetailsPage onAddToCart={handleAddToCart} />} />
+        <Route
+          path="/product/:id"
+          element={<ProductDetailsPage onAddToCart={handleAddToCart} />}
+        />
 
         {/* Auth Routes */}
         <Route path="/login" element={<LoginPage />} />

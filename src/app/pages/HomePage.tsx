@@ -1,13 +1,13 @@
-import { CategoriesSection } from '@/app/components/CategoriesSection';
-import { FeaturedProducts } from '@/app/components/FeaturedProducts';
-import { VendorsSection } from '@/app/components/VendorsSection';
-import { ValueProposition } from '@/app/components/ValueProposition';
-import { Testimonials } from '@/app/components/Testimonials';
-import { Newsletter } from '@/app/components/Newsletter';
-import { HeroCarousel } from '@/app/components/HeroCarousel';
-import type { Product } from '@/app/components/shop/ProductCard';
-import { NewsfeedSection } from '@/app/components/NewsfeedSection';
-import type { CategoryItem, VendorItem, NewsfeedItem } from '@/lib/store-api';
+import { CategoriesSection } from "@/app/components/CategoriesSection";
+import { FeaturedProducts } from "@/app/components/FeaturedProducts";
+import { VendorsSection } from "@/app/components/VendorsSection";
+import { ValueProposition } from "@/app/components/ValueProposition";
+import { Testimonials } from "@/app/components/Testimonials";
+import { Newsletter } from "@/app/components/Newsletter";
+import { HeroCarousel } from "@/app/components/HeroCarousel";
+import type { Product } from "@/app/components/shop/ProductCard";
+import { NewsfeedSection } from "@/app/components/NewsfeedSection";
+import type { CategoryItem, VendorItem, NewsfeedItem } from "@/lib/store-api";
 
 interface HomePageProps {
   products: Product[];
@@ -32,12 +32,16 @@ export function HomePage({
   newsfeedsLoading,
   onAddToCart,
 }: HomePageProps) {
+  console.log(newsfeeds);
   return (
     <div className="bg-white">
       <section className="w-full my-6">
         <HeroCarousel />
       </section>
-      <CategoriesSection categories={categories} isLoading={categoriesLoading} />
+      <CategoriesSection
+        categories={categories}
+        isLoading={categoriesLoading}
+      />
       <FeaturedProducts
         products={products.slice(0, 6)}
         isLoading={productsLoading}
