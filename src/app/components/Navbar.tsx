@@ -1,11 +1,19 @@
 import { useState, useEffect, useRef } from "react";
 import {
-  Search, ShoppingCart, User, Menu, X,
-  LogOut, ChevronDown, Settings, Package,
-  Heart, Bell,
+  Search,
+  ShoppingCart,
+  User,
+  Menu,
+  X,
+  LogOut,
+  ChevronDown,
+  Settings,
+  Package,
+  Heart,
+  Bell,
 } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router";
-import logo from '../../../public/ecomlogo.jpeg'
+import logo from "../../../public/ecomlogo.jpeg";
 
 interface AuthUser {
   name: string;
@@ -22,7 +30,7 @@ interface NavbarProps {
 const NAV_LINKS = [
   { label: "Home", to: "/" },
   { label: "Shop", to: "/shop" },
-  { label: "Vendor", to: "/vendor" },
+  // { label: "Vendor", to: "/vendor" },
   { label: "Categories", to: "/categories" },
   { label: "Our Story", to: "/about" },
 ];
@@ -65,7 +73,10 @@ export function Navbar({ cartCount, user, onLogout }: NavbarProps) {
   /* ── Close profile dropdown on outside click ───── */
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
+      if (
+        profileRef.current &&
+        !profileRef.current.contains(e.target as Node)
+      ) {
         setProfileOpen(false);
       }
     };
@@ -90,13 +101,15 @@ export function Navbar({ cartCount, user, onLogout }: NavbarProps) {
 
   return (
     <nav
-      className={`sticky top-0 z-50 w-full bg-white transition-all duration-300 ${isScrolled ? "shadow-[0_2px_20px_rgba(0,0,0,0.08)]" : "border-b border-gray-100"
-        }`}
+      className={`sticky top-0 z-50 w-full bg-white transition-all duration-300 ${
+        isScrolled
+          ? "shadow-[0_2px_20px_rgba(0,0,0,0.08)]"
+          : "border-b border-gray-100"
+      }`}
     >
       {/* ═══════════════════ MAIN BAR ═══════════════════ */}
       <div className="max-w-[1320px] mx-auto px-4 sm:px-6 xl:px-8">
         <div className="flex items-center h-[68px] gap-8">
-
           {/* ── Logo ────────────────────────────────────── */}
           <Link
             to="/"
@@ -113,13 +126,10 @@ export function Navbar({ cartCount, user, onLogout }: NavbarProps) {
             </span> */}
 
             <img
-                src="/namelogo.png"
-                alt="Himalayan Local Product Nepal"
-                className="h-10 w-auto object-contain "
-              />
-
-
-
+              src="/namelogo.png"
+              alt="Himalayan Local Product Nepal"
+              className="h-10 w-auto object-contain "
+            />
           </Link>
 
           {/* ── Desktop Nav Links ───────────────────────── */}
@@ -128,10 +138,11 @@ export function Navbar({ cartCount, user, onLogout }: NavbarProps) {
               <Link
                 key={link.to}
                 to={link.to}
-                className={`whitespace-nowrap px-3.5 py-2 rounded-lg text-[0.875rem] font-semibold transition-all duration-150 ${isActive(link.to)
-                  ? "text-[#16A34A] bg-[#F0FDF4]"
-                  : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                  }`}
+                className={`whitespace-nowrap px-3.5 py-2 rounded-lg text-[0.875rem] font-semibold transition-all duration-150 ${
+                  isActive(link.to)
+                    ? "text-[#16A34A] bg-[#F0FDF4]"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                }`}
               >
                 {link.label}
               </Link>
@@ -159,7 +170,9 @@ export function Navbar({ cartCount, user, onLogout }: NavbarProps) {
                 placeholder="Search products…"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSearch(searchQuery)}
+                onKeyDown={(e) =>
+                  e.key === "Enter" && handleSearch(searchQuery)
+                }
                 className="bg-transparent border-none outline-none text-[0.85rem] text-gray-700 placeholder:text-gray-400 w-full"
               />
             </div>
@@ -168,10 +181,11 @@ export function Navbar({ cartCount, user, onLogout }: NavbarProps) {
             <Link
               to="/cart"
               aria-label="Cart"
-              className={`relative flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-150 ${isActive("/cart")
-                ? "text-[#16A34A] bg-[#F0FDF4]"
-                : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                }`}
+              className={`relative flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-150 ${
+                isActive("/cart")
+                  ? "text-[#16A34A] bg-[#F0FDF4]"
+                  : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+              }`}
             >
               <ShoppingCart className="w-5 h-5" />
               {cartCount > 0 && (
@@ -237,18 +251,22 @@ export function Navbar({ cartCount, user, onLogout }: NavbarProps) {
                         />
                       </div>
                       <div className="min-w-0">
-                        <p className="text-sm font-bold text-gray-900 truncate">{user.name}</p>
-                        <p className="text-xs text-gray-500 truncate">{user.email}</p>
+                        <p className="text-sm font-bold text-gray-900 truncate">
+                          {user.name}
+                        </p>
+                        <p className="text-xs text-gray-500 truncate">
+                          {user.email}
+                        </p>
                       </div>
                     </div>
 
                     <div className="p-1.5 space-y-0.5">
                       {[
-                        { to: "/profile", icon: User, label: "My Profile" },
-                        { to: "/profile", icon: Package, label: "My Orders" },
-                        { to: "/profile", icon: Heart, label: "Wishlist" },
-                        { to: "/profile", icon: Bell, label: "Notifications" },
-                        { to: "/profile", icon: Settings, label: "Settings" },
+                        { to: "/profile", icon: User, label: "Dashboard" },
+                        // { to: "/profile", icon: Package, label: "My Orders" },
+                        // { to: "/profile", icon: Heart, label: "Wishlist" },
+                        // { to: "/profile", icon: Bell, label: "Notifications" },
+                        // { to: "/profile", icon: Settings, label: "Settings" },
                       ].map(({ to, icon: Icon, label }) => (
                         <Link
                           key={label}
@@ -286,7 +304,11 @@ export function Navbar({ cartCount, user, onLogout }: NavbarProps) {
               onClick={() => setMobileSearchOpen((v) => !v)}
               className="p-2 rounded-xl text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-colors"
             >
-              {mobileSearchOpen ? <X className="w-5 h-5" /> : <Search className="w-5 h-5" />}
+              {mobileSearchOpen ? (
+                <X className="w-5 h-5" />
+              ) : (
+                <Search className="w-5 h-5" />
+              )}
             </button>
 
             {/* Cart */}
@@ -308,7 +330,11 @@ export function Navbar({ cartCount, user, onLogout }: NavbarProps) {
               onClick={() => setMobileOpen((v) => !v)}
               className="p-2 rounded-xl text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-colors"
             >
-              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {mobileOpen ? (
+                <X className="w-5 h-5" />
+              ) : (
+                <Menu className="w-5 h-5" />
+              )}
             </button>
           </div>
         </div>
@@ -324,7 +350,9 @@ export function Navbar({ cartCount, user, onLogout }: NavbarProps) {
                 placeholder="Search products…"
                 value={mobileSearchQuery}
                 onChange={(e) => setMobileSearchQuery(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSearch(mobileSearchQuery)}
+                onKeyDown={(e) =>
+                  e.key === "Enter" && handleSearch(mobileSearchQuery)
+                }
                 className="bg-transparent border-none outline-none text-sm text-gray-700 placeholder:text-gray-400 w-full"
               />
             </div>
@@ -336,7 +364,6 @@ export function Navbar({ cartCount, user, onLogout }: NavbarProps) {
       {mobileOpen && (
         <div className="lg:hidden border-t border-gray-100 bg-white animate-in slide-in-from-top-2 duration-200">
           <div className="max-w-[1320px] mx-auto px-4 sm:px-6 py-4 space-y-1">
-
             {/* Logged-in user card */}
             {user && (
               <div className="flex items-center gap-3 p-3 mb-2 bg-[#F0FDF4] rounded-2xl border border-[#BBF7D0]">
@@ -352,7 +379,9 @@ export function Navbar({ cartCount, user, onLogout }: NavbarProps) {
                   />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-sm font-bold text-gray-900 truncate">{user.name}</p>
+                  <p className="text-sm font-bold text-gray-900 truncate">
+                    {user.name}
+                  </p>
                   <p className="text-xs text-gray-500 truncate">{user.email}</p>
                 </div>
               </div>
@@ -363,10 +392,11 @@ export function Navbar({ cartCount, user, onLogout }: NavbarProps) {
               <Link
                 key={link.to}
                 to={link.to}
-                className={`flex items-center h-11 px-4 rounded-xl text-[0.9rem] font-semibold transition-colors ${isActive(link.to)
-                  ? "text-[#16A34A] bg-[#F0FDF4]"
-                  : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
-                  }`}
+                className={`flex items-center h-11 px-4 rounded-xl text-[0.9rem] font-semibold transition-colors ${
+                  isActive(link.to)
+                    ? "text-[#16A34A] bg-[#F0FDF4]"
+                    : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                }`}
               >
                 {link.label}
               </Link>
@@ -410,7 +440,10 @@ export function Navbar({ cartCount, user, onLogout }: NavbarProps) {
             ) : (
               <button
                 id="mobile-account-btn"
-                onClick={() => { setMobileOpen(false); handleAccountClick(); }}
+                onClick={() => {
+                  setMobileOpen(false);
+                  handleAccountClick();
+                }}
                 className="w-full flex items-center justify-center gap-2 h-11 px-4 rounded-xl text-[0.9rem] font-bold bg-[#16A34A] text-white hover:bg-[#15803D] transition-colors"
               >
                 <User className="w-4 h-4" />

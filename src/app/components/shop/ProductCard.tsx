@@ -1,6 +1,8 @@
 import { Star, ShoppingCart, MapPin, Eye, StarHalf } from "lucide-react";
 import { Link } from "react-router";
 import { MiniMap } from "./MiniMap";
+import { storefrontApi } from "@/lib/store-api";
+import { useEffect, useState } from "react";
 
 export interface Product {
   id: number;
@@ -51,7 +53,10 @@ export function ProductCard({
         onMouseLeave={onMouseLeave}
       >
         {/* Product Image */}
-        <Link to={`/product/${product.id}`} className="block relative h-52 overflow-hidden bg-[#F9FAFB]">
+        <Link
+          to={`/product/${product.id}`}
+          className="block relative h-52 overflow-hidden bg-[#F9FAFB]"
+        >
           <img
             src={product.image}
             alt={product.name}
@@ -86,7 +91,9 @@ export function ProductCard({
             </Link>
 
             <div className="flex items-center gap-2 text-xs text-[#6B7280] mb-3">
-              <span className="font-medium text-[#374151]">{product.vendor}</span>
+              <span className="font-medium text-[#374151]">
+                {product.vendor}
+              </span>
               <span>•</span>
               <div className="flex items-center gap-1">
                 <MapPin className="w-3 h-3 text-[#16A34A]" />
@@ -107,16 +114,24 @@ export function ProductCard({
                   />
                 ))}
               </div>
-              <span className="text-xs font-semibold text-[#111827]">{product.rating}</span>
-              <span className="text-xs text-[#6B7280]">({product.reviews})</span>
+              <span className="text-xs font-semibold text-[#111827]">
+                {product.rating}
+              </span>
+              <span className="text-xs text-[#6B7280]">
+                ({product.reviews})
+              </span>
             </div>
           </div>
 
           <div className="flex items-center justify-between pt-3 border-t border-[#F3F4F6] mt-auto">
             <div>
-              <div className="text-lg font-bold text-[#16A34A]">Rs. {product.price}</div>
+              <div className="text-lg font-bold text-[#16A34A]">
+                Rs. {product.price}
+              </div>
               {product.originalPrice && (
-                <div className="text-xs text-[#6B7280] line-through">Rs. {product.originalPrice}</div>
+                <div className="text-xs text-[#6B7280] line-through">
+                  Rs. {product.originalPrice}
+                </div>
               )}
             </div>
 
@@ -137,12 +152,30 @@ export function ProductCard({
       </div>
     );
   }
+  const [vendorId, setVendorId] = useState<string | undefined>();
+
+  useEffect(() => {
+    const getVendorId = async () => {
+      try {
+        const data = await storefrontApi.getVendors();
+
+        const vendor = data.find((x) => x?.storeName === product?.vendor);
+
+        setVendorId(vendor?.id?.toString());
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    getVendorId();
+  }, [product?.vendor]);
   return (
     <div
-      className={`bg-white rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${isHighlighted
-        ? "border-[#F59E0B] shadow-xl scale-[1.02]"
-        : "border-[#E5E7EB] hover:border-[#22C55E] hover:shadow-lg"
-        }`}
+      className={`bg-white rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${
+        isHighlighted
+          ? "border-[#F59E0B] shadow-xl scale-[1.02]"
+          : "border-[#E5E7EB] hover:border-[#22C55E] hover:shadow-lg"
+      }`}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
@@ -194,16 +227,18 @@ export function ProductCard({
 
               {/* Vendor + Location */}
               <div className="flex flex-wrap items-center gap-5 text-sm text-[#6B7280] mb-3">
-                <span className="font-medium">{product.vendor}</span>
+                <Link to={"/vendor/" + vendorId}>
+                  <span className="font-medium  hover:text-yellow-500">
+                    {product.vendor}
+                  </span>
+                </Link>
 
                 <div className="flex items-center gap-1">
                   <MapPin className="w-3.5 h-3.5" />
                   <span>{product.location}</span>
                 </div>
 
-                <span className="text-[#16A34A]">
-                  {product.distance}
-                </span>
+                <span className="text-[#16A34A]">{product.distance}</span>
               </div>
 
               {/* Rating */}
@@ -231,12 +266,7 @@ export function ProductCard({
                       );
                     }
 
-                    return (
-                      <Star
-                        key={i}
-                        className="w-4 h-4 text-[#E5E7EB]"
-                      />
-                    );
+                    return <Star key={i} className="w-4 h-4 text-[#E5E7EB]" />;
                   })}
                 </div>
 
