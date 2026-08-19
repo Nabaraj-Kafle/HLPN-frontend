@@ -1,0 +1,42 @@
+/* Custom Slick Carousel Styles */
+
+/* Dots Styling */
+.slick-dots li {
+  margin: 0 4px;
+}
+
+.slick-dots li button:before {
+  display: none;
+}
+
+.slick-dots li.slick-active div {
+  background-color: white !important;
+  transform: scale(1.2);
+}
+
+/* Arrow Button Customization */
+.slick-prev,
+.slick-next {
+  width: auto;
+  height: auto;
+  z-index: 20;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  display: none;
+}
+
+/* Smooth Slide Transitions */
+.slick-slide {
+  transition: all 0.3s ease;
+}
+
+/* Remove default slick outline */
+.slick-slide:focus {
+  outline: none;
+}
+
+.slick-list {
+  overflow: hidden;
+}

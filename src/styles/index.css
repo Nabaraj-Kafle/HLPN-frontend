@@ -1,0 +1,23 @@
+@import './tailwind.css';
+@import './theme.css';
+@import 'slick-carousel/slick/slick.css';
+@import 'slick-carousel/slick/slick-theme.css';
+@import './carousel.css';
+@import 'leaflet/dist/leaflet.css';
+@import './map.css';
+
+/* Sonner toast positioning: place top-right to appear below the navbar */
+[data-sonner-toaster][data-x-position=right][data-y-position=top] {
+      /* space from top - adjust to match navbar height (68px) + small gap */
+      --offset-top: 76px;
+      /* offset from right edge */
+      --offset-right: 20px;
+}
+
+@media (max-width: 600px) {
+
+      /* keep toasts full width on small screens like default behavior */
+      [data-sonner-toaster][data-x-position=right][data-y-position=top] {
+            --mobile-offset-top: 72px;
+      }
+}
