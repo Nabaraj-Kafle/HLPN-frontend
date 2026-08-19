@@ -182,15 +182,15 @@ export function LoginPage() {
             </form>
 
             {/* Divider */}
-            <div className="flex items-center gap-4 my-6">
+            {/* <div className="flex items-center gap-4 my-6">
               <div className="flex-1 h-px bg-slate-200" />
               <span className="text-xs font-semibold text-slate-400 uppercase tracking-widest">or continue with</span>
               <div className="flex-1 h-px bg-slate-200" />
-            </div>
+            </div> */}
 
             {/* Social logins */}
 
-            <div className="grid grid-cols-2 gap-3">
+            {/* <div className="grid grid-cols-2 gap-3">
               <button className="flex items-center justify-center gap-2.5 py-3 px-4 border border-slate-200 rounded-xl text-slate-700 text-sm font-semibold hover:bg-slate-50 hover:border-slate-300 transition-all">
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                   <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -206,7 +206,7 @@ export function LoginPage() {
                 </svg>
                 Phone
               </button>
-            </div>
+            </div> */}
 
             {/* Register link */}
             <p className="text-center text-sm text-slate-500 mt-7">
