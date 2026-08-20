@@ -406,7 +406,7 @@ function AppContent() {
           }
         />
         <Route path="/categories" element={<CategoriesPage />} />
-        <Route
+        <Route //
           path="/category/:categoryName"
           element={
             <CategoryProductsPage
