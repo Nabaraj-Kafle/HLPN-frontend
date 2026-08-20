@@ -109,14 +109,19 @@ function AppContent() {
       setNewsfeedsLoading(true);
       setFeaturedLoading(true);
       try {
-        const [apiProducts, apiFeaturedProducts, apiCategories, apiVendors, apiNewsfeeds] =
-          await Promise.all([
-            storefrontApi.getProducts(),
-            storefrontApi.getFeaturedProducts(),
-            storefrontApi.getCategories(),
-            storefrontApi.getVendors(),
-            storefrontApi.getNewsfeeds(),
-          ]);
+        const [
+          apiProducts,
+          apiFeaturedProducts,
+          apiCategories,
+          apiVendors,
+          apiNewsfeeds,
+        ] = await Promise.all([
+          storefrontApi.getProducts(),
+          storefrontApi.getFeaturedProducts(),
+          storefrontApi.getCategories(),
+          storefrontApi.getVendors(),
+          storefrontApi.getNewsfeeds(),
+        ]);
         setProducts(apiProducts);
         setFeaturedProducts(apiFeaturedProducts);
         setCategories(apiCategories);
