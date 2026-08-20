@@ -105,6 +105,7 @@ const toProduct = (raw: MaybeRecord): Product => {
     price,
     rating: ratingValue,
     reviews: reviewsValue,
+    isFeatured: Boolean(raw?.is_featured),
     image,
     vendor: firstString(raw?.vendor_name, vendor.shop_name, vendor.name, "Local Store"),
     location: firstString(raw?.location, vendor.location, "Nepal"),
@@ -485,6 +486,14 @@ export const storefrontApi = {
     const { data } = await storeApi.get(`/catalog/products/${id}/`);
     return toProductDetails(data);
   },
+
+  getFeaturedProducts: async (): Promise<Product[]> => {
+    const { data } = await storeApi.get("/catalog/products/", {
+      params: { featured: "true" },
+    });
+    return toList(data, toProduct);
+  },
+
 
   getProductReviews: async (productId: number): Promise<ProductReview[]> => {
     const { data } = await storeApi.get("/catalog/reviews/", {
