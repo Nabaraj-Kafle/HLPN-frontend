@@ -38,6 +38,7 @@ const stats = [
       { label: "Average seller growth", value: "31%" },
       { label: "Onboarding time", value: "< 24 hrs" },
 ];
+//test
 
 export function BecomeVendorPage() {
       const { isAuthenticated, isLoading ,user } = useAuth();
