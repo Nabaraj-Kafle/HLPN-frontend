@@ -120,6 +120,8 @@ export function ProfilePage() {
     if (!authLoading && authUser?.role === "admin") {
       window.location.href =
         "https://api.himalayanlocalproductnepal.com.np/dashboard/";
+        // "http://127.0.0.1:8000/dashboard/";
+        
     }
   }, [authLoading, authUser?.role]);
   const navigate = useNavigate();

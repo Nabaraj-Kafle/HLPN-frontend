@@ -12,6 +12,8 @@ import type { CategoryItem, VendorItem, NewsfeedItem } from "@/lib/store-api";
 interface HomePageProps {
   products: Product[];
   productsLoading: boolean;
+  featuredProducts: Product[];
+  featuredLoading: boolean;
   categories: CategoryItem[];
   categoriesLoading: boolean;
   vendors: VendorItem[];
@@ -24,6 +26,8 @@ interface HomePageProps {
 export function HomePage({
   products,
   productsLoading,
+  featuredProducts,
+  featuredLoading,
   categories,
   categoriesLoading,
   vendors,
@@ -43,8 +47,8 @@ export function HomePage({
         isLoading={categoriesLoading}
       />
       <FeaturedProducts
-        products={products.slice(0, 6)}
-        isLoading={productsLoading}
+        products={featuredProducts}
+        isLoading={featuredLoading}
         onAddToCart={onAddToCart}
       />
       <VendorsSection vendors={vendors} isLoading={vendorsLoading} />

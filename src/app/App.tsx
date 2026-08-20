@@ -88,6 +88,8 @@ function AppContent() {
   const [vendorsLoading, setVendorsLoading] = useState(true);
   const [newsfeeds, setNewsfeeds] = useState<NewsfeedItem[]>([]);
   const [newsfeedsLoading, setNewsfeedsLoading] = useState(true);
+  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+  const [featuredLoading, setFeaturedLoading] = useState(true);
   const { user, logout } = useAuth();
 
   const syncCartFromApi = async () => {
@@ -105,15 +107,18 @@ function AppContent() {
       setCategoriesLoading(true);
       setVendorsLoading(true);
       setNewsfeedsLoading(true);
+      setFeaturedLoading(true);
       try {
-        const [apiProducts, apiCategories, apiVendors, apiNewsfeeds] =
+        const [apiProducts, apiFeaturedProducts, apiCategories, apiVendors, apiNewsfeeds] =
           await Promise.all([
             storefrontApi.getProducts(),
+            storefrontApi.getFeaturedProducts(),
             storefrontApi.getCategories(),
             storefrontApi.getVendors(),
             storefrontApi.getNewsfeeds(),
           ]);
         setProducts(apiProducts);
+        setFeaturedProducts(apiFeaturedProducts);
         setCategories(apiCategories);
         setVendors(apiVendors);
         setNewsfeeds(apiNewsfeeds);
@@ -124,6 +129,7 @@ function AppContent() {
         setCategoriesLoading(false);
         setVendorsLoading(false);
         setNewsfeedsLoading(false);
+        setFeaturedLoading(false);
       }
     };
 
@@ -365,6 +371,8 @@ function AppContent() {
             <HomePage
               products={products}
               productsLoading={productsLoading}
+              featuredProducts={featuredProducts}
+              featuredLoading={featuredLoading}
               categories={categories}
               categoriesLoading={categoriesLoading}
               vendors={vendors}

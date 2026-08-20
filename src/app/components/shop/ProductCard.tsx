@@ -20,6 +20,7 @@ export interface Product {
   badge?: string;
   latitude?: number | null;
   longitude?: number | null;
+  isFeatured?: boolean;
 }
 
 interface ProductCardProps {
